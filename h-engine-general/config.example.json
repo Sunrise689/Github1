@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "maxInputChars": 12000,
+  "scoring": {
+    "minScore": 0.2,
+    "topK": 5,
+    "negativePenalty": 0.25,
+    "semanticCatalogLimit": 80,
+    "linkedLimit": 5
+  },
+  "weightPolicy": {
+    "defaultProfile": "balanced"
+  },
+  "knowledgeItems": [
+    {
+      "id": "atomic-knowledge",
+      "title": "Atomic Knowledge",
+      "summary": "Store one independently useful fact or method in each knowledge item.",
+      "type": "method",
+      "theme": "knowledge-design",
+      "weight": 0.9,
+      "features": { "importance": 0.9, "sourceReliability": 0.6, "freshness": 0.5, "foundational": 0.8, "usage": 0.5 },
+      "triggers": [
+        { "text": "knowledge atom", "weight": 1.0 },
+        { "text": "atomic knowledge", "weight": 0.9 },
+        { "text": "信息原子", "weight": 1.0 },
+        { "text": "拆分知识", "weight": 0.8 }
+      ],
+      "negativeTriggers": ["whole document archive"],
+      "tags": ["knowledge-base", "indexing"],
+      "links": ["weighted-activation"]
+    },
+    {
+      "id": "weighted-activation",
+      "title": "Weighted Knowledge Activation",
+      "summary": "Assign knowledge items a priority and activate only relevant items for each query.",
+      "type": "method",
+      "theme": "knowledge-retrieval",
+      "weight": 1.0,
+      "features": { "importance": 1.0, "sourceReliability": 0.7, "freshness": 0.6, "foundational": 0.8, "usage": 0.5 },
+      "triggers": [
+        { "text": "knowledge weight", "weight": 1.0 },
+        { "text": "weighted retrieval", "weight": 0.9 },
+        { "text": "知识权重", "weight": 1.0 },
+        { "text": "及时触发", "weight": 0.8 }
+      ],
+      "negativeTriggers": ["load the entire database"],
+      "tags": ["knowledge-base", "activation", "ranking"],
+      "links": ["atomic-knowledge", "knowledge-links"]
+    },
+    {
+      "id": "knowledge-links",
+      "title": "Knowledge Links",
+      "summary": "Explicit links let a relevant knowledge item surface related items without loading the whole collection.",
+      "type": "method",
+      "theme": "knowledge-graph",
+      "weight": 0.85,
+      "features": { "importance": 0.85, "sourceReliability": 0.6, "freshness": 0.5, "foundational": 0.8, "usage": 0.5 },
+      "triggers": [
+        { "text": "connected knowledge", "weight": 0.9 },
+        { "text": "related knowledge items", "weight": 0.8 },
+        { "text": "知识关联", "weight": 1.0 },
+        { "text": "知识连接", "weight": 0.9 }
+      ],
+      "negativeTriggers": [],
+      "tags": ["knowledge-base", "links", "emergence"],
+      "links": ["weighted-activation"]
+    },
+    {
+      "id": "source-provenance",
+      "title": "Knowledge Provenance",
+      "summary": "Keep a source reference with each knowledge item so a retrieved result can be checked.",
+      "type": "fact",
+      "theme": "knowledge-quality",
+      "weight": 0.7,
+      "features": { "importance": 0.7, "sourceReliability": 0.8, "freshness": 0.6, "foundational": 0.5, "usage": 0.5 },
+      "triggers": [
+        { "text": "knowledge source", "weight": 0.8 },
+        { "text": "source reference", "weight": 0.9 },
+        { "text": "知识出处", "weight": 1.0 },
+        { "text": "来源追溯", "weight": 0.8 }
+      ],
+      "negativeTriggers": [],
+      "tags": ["knowledge-base", "provenance"],
+      "links": []
+    }
+  ],
+  "labels": [
+    {
+      "id": "method",
+      "description": "A repeatable technique with actionable steps; do not use for descriptions of how a system works.",
+      "keywords": ["method", "procedure", "how to", "方法", "步骤"]
+    },
+    {
+      "id": "fact",
+      "description": "A checkable fact or definition.",
+      "keywords": ["fact", "definition", "事实", "定义"]
+    },
+    {
+      "id": "case",
+      "description": "A concrete example or observed case.",
+      "keywords": ["case", "example", "案例", "实例"]
+    },
+    {
+      "id": "trigger",
+      "description": "A phrase or condition that signals when knowledge should be activated.",
+      "keywords": ["trigger", "activation cue", "触发", "唤起"]
+    }
+  ]
+}

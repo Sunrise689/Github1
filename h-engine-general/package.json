@@ -1,0 +1,8 @@
+{
+  "name": "h-engine-general",
+  "version": "0.1.0",
+  "description": "Weighted knowledge activation, ranking, links, and optional metadata labeling",
+  "private": true,
+  "engines": { "node": ">=18" },
+  "scripts": { "test": "node --test" }
+}
