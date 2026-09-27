@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0",
+  "purpose": "QTE 因子验证纪律。任何因子结论在向用户呈现前，必须说明通过了哪些检验、未通过或尚未执行哪些检验，避免把运气当规律。",
+  "scope": {
+    "artifact_type": "knowledge_specification",
+    "numerical_engine_included": false,
+    "allowed_step_status": [
+      "passed",
+      "failed",
+      "not_run",
+      "not_applicable"
+    ],
+    "default_status": "not_run"
+  },
+  "pipeline": [
+    {
+      "step": 1,
+      "check_id": "statistical_significance",
+      "name": "统计显著性",
+      "check": "报告效应大小、标准误、置信区间、t 值或 p 值；t>2 或 p<0.05 只能作为常见启发式参考，不能脱离检验假设机械使用。",
+      "plain": "这个结果相对噪声够不够突出，而且幅度是否真的有意义。",
+      "caveat": "阈值不是铁律；自相关、异方差、厚尾、小样本和模型设定都会影响推断。"
+    },
+    {
+      "step": 2,
+      "check_id": "multiple_testing",
+      "name": "多重检验校正",
+      "check": "登记尝试过的信号、参数和样本数量，并使用适当校正、假发现率或独立复现。",
+      "plain": "试了一百个公式，总会有几个碰巧好看，要把试错次数算进去。",
+      "caveat": "未披露研究自由度时，单个漂亮的 t 值不能视为强证据。"
+    },
+    {
+      "step": 3,
+      "check_id": "out_of_sample",
+      "name": "样本外检验",
+      "check": "在完全未参与规则选择、参数调整和阈值选择的时间段上复验，并保留时间顺序。",
+      "plain": "换一段模型从没见过的数据，这个规律还在不在。",
+      "caveat": "反复查看样本外结果再调参，会把样本外重新变成样本内。"
+    },
+    {
+      "step": 4,
+      "check_id": "cross_market",
+      "name": "跨市场验证",
+      "check": "在制度、地域、资产类别或不同经济阶段的独立样本中复验，并解释不可比之处。",
+      "plain": "换个市场、换个年代，这个规律还站不站得住。",
+      "caveat": "市场制度、会计规则、做空约束和数据质量不同，不能只比结果不比口径。"
+    },
+    {
+      "step": 5,
+      "check_id": "transaction_cost_adjustment",
+      "name": "交易成本调整",
+      "check": "扣除手续费、买卖价差、滑点、市场冲击、借券与融资成本，并做容量压力测试。",
+      "plain": "纸面利润扣掉真实落地的代价以后还剩多少。",
+      "caveat": "高换手、小盘和低流动性策略最容易被成本与容量吃掉。"
+    },
+    {
+      "step": 6,
+      "check_id": "survivorship_bias",
+      "name": "幸存者偏差",
+      "check": "使用当时可投资的完整资产集合，包含退市、合并、破产和历史指数成分。",
+      "plain": "是不是只看了活下来的赢家，漏掉已经消失的失败者。",
+      "caveat": "当前成分股倒推历史通常会让结果过于乐观。"
+    },
+    {
+      "step": 7,
+      "check_id": "look_ahead_bias",
+      "name": "前视偏差",
+      "check": "所有特征只使用决策时点已公开的数据，并按真实发布日期、修订版本和可交易时间对齐。",
+      "plain": "回到当时，模型真的已经知道这些信息吗。",
+      "caveat": "财报发布日期、宏观数据修订、指数成分历史和复权处理尤其容易泄漏未来。"
+    },
+    {
+      "step": 8,
+      "check_id": "economic_rationale",
+      "name": "经济解释",
+      "check": "说明可能的风险补偿、行为偏差、制度摩擦或实施约束，并列出能推翻该解释的证据。",
+      "plain": "这个规律为什么可能存在，能不能讲通，又有什么证据会让我们改口。",
+      "caveat": "故事说得通不代表因果成立；经济解释必须和实证检验相互约束。"
+    }
+  ],
+  "verdict_levels": [
+    {
+      "level": "robust",
+      "plain": "关键检验通过，证据相对较强，但仍不是未来保证。",
+      "required": "step 1、3、4、5 均为 passed，step 2、6、7 未 failed，并且 step 8 有可审计说明。"
+    },
+    {
+      "level": "suggestive",
+      "plain": "有一定证据，但关键稳健性检验仍不完整，需要保留怀疑。",
+      "required": "step 1 为 passed，但 step 3、4、5 至少一项不是 passed，且不存在已知致命数据泄漏。"
+    },
+    {
+      "level": "weak",
+      "plain": "证据薄弱，结果可能主要来自运气、成本遗漏或研究偏差。",
+      "required": "只有少量样本内证据，或任何关键步骤 failed。"
+    },
+    {
+      "level": "unverified",
+      "plain": "尚未完成验证，只能介绍概念和待验证假设。",
+      "required": "没有可审计检验结果，或仅有 evidence_pending。"
+    }
+  ],
+  "evidence_state_contract": {
+    "required_fields_per_step": [
+      "step",
+      "status",
+      "method",
+      "result",
+      "source_or_artifact",
+      "caveat"
+    ],
+    "missing_rule": "缺少计算、样本、版本或来源时，该步骤必须标 not_run，不得从教材中的一般性描述推断为 passed。",
+    "failed_rule": "任一明确失败结果必须保留，不得只展示通过项。"
+  },
+  "presentation_rule": {
+    "required": "展示 factor_id、verdict_level、8 步状态表、最强支持证据、最强对立证据、尚缺资料和历史限定语。",
+    "directional_constraint": "weak 与 unverified 不得给倾向性结论；robust 也不得改写成收益承诺。",
+    "disclaimer": "仅供学习参考，不构成任何投资建议。"
+  }
+}

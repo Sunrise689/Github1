@@ -1,0 +1,19 @@
+{
+  "schema_version": "3.0",
+  "generated": "2026-08-17T02:20:30.408103+08:00",
+  "doc_count": 1503,
+  "by_record_type": {
+    "evidence_pending": 5,
+    "factor_definition": 38,
+    "factor_evidence_link": 38,
+    "framework_specification": 4,
+    "knowledge": 1330,
+    "legacy_factor_definition": 5,
+    "official_data_evidence": 6,
+    "official_dataset": 13,
+    "paper_evidence": 9,
+    "translation_term": 55
+  },
+  "docs_file": "C:\\Users\\18295\\Documents\\kline-pattern-master\\qte\\index\\docs.json",
+  "index_file": "C:\\Users\\18295\\Documents\\kline-pattern-master\\qte\\index\\bm25_index.npz"
+}

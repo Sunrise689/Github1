@@ -1,0 +1,243 @@
+{
+  "schema_version": "1.0",
+  "purpose": "定义用户自然语言观点如何映射为结构化量化查询，以及结构化结果如何再翻译回大白话。本文件只定义语义与匹配规范，不执行计算，不生成交易指令。",
+  "scope": {
+    "artifact_type": "knowledge_specification",
+    "numerical_engine_included": false,
+    "options_contract_matching_included": false,
+    "investment_advice_allowed": false
+  },
+  "input_contract": {
+    "required_fields": [
+      "raw_user_text"
+    ],
+    "optional_fields": [
+      "asset_id",
+      "asset_name",
+      "market",
+      "as_of",
+      "currency",
+      "known_portfolio_context"
+    ],
+    "preservation_rule": "原话、资产标识、日期、数值、正负号、百分号、币种和上下界必须原样保留在解析结果中。",
+    "ambiguity_rule": "用户未说明的维度必须写 unspecified；资产、时间或数值口径存在实质歧义时，输出 clarification_needed，不得擅自猜测。"
+  },
+  "view_dimensions": [
+    {
+      "dim": "direction",
+      "values": [
+        "bullish",
+        "bearish",
+        "neutral",
+        "unspecified"
+      ],
+      "plain": "看涨、看跌、中性或没有说明"
+    },
+    {
+      "dim": "magnitude",
+      "values": [
+        "small",
+        "medium",
+        "large",
+        "unspecified"
+      ],
+      "plain": "预期幅度",
+      "rule": "small、medium、large 的阈值必须由资产类别、时间范围和产品配置表决定；LLM 不得自行设阈值。"
+    },
+    {
+      "dim": "timeframe",
+      "values": [
+        "short",
+        "medium",
+        "long",
+        "unspecified"
+      ],
+      "plain": "预期时间范围",
+      "rule": "同时保留用户原始期限，例如 1 个月；分类阈值由产品配置表决定。"
+    },
+    {
+      "dim": "volatility_view",
+      "values": [
+        "high",
+        "low",
+        "unchanged",
+        "unspecified"
+      ],
+      "plain": "预期波动变大、变小、不变或没有说明"
+    },
+    {
+      "dim": "range_bound",
+      "values": [
+        "bounded",
+        "unbounded",
+        "unspecified"
+      ],
+      "plain": "是否明确给了上涨或下跌边界"
+    }
+  ],
+  "parsed_view_schema": {
+    "fields": [
+      "raw_user_text",
+      "asset_id",
+      "direction",
+      "magnitude",
+      "timeframe",
+      "timeframe_raw",
+      "volatility_view",
+      "range_bound",
+      "numeric_statements",
+      "confidence",
+      "clarification_needed",
+      "ambiguities"
+    ],
+    "numeric_statement_fields": [
+      "verbatim",
+      "value",
+      "unit",
+      "sign",
+      "bound_type",
+      "time_reference"
+    ]
+  },
+  "factor_matching_rules": [
+    {
+      "condition": "direction is bullish or bearish and timeframe is short",
+      "matched_focus": [
+        "momentum_6_1",
+        "short_term_reversal",
+        "trend_strength"
+      ],
+      "reason": "短期方向观点需要同时观察趋势延续与短期反转，不能只选一边。"
+    },
+    {
+      "condition": "direction is bullish or bearish and timeframe is medium or long",
+      "matched_focus": [
+        "momentum_12_1",
+        "value_pe",
+        "value_pb",
+        "market_beta",
+        "industry_beta"
+      ],
+      "reason": "中长期方向需把价格惯性、估值以及市场和行业共同带动分开。"
+    },
+    {
+      "condition": "volatility_view is high or low",
+      "matched_focus": [
+        "volatility_realized",
+        "idiosyncratic_volatility",
+        "maximum_drawdown",
+        "skewness",
+        "kurtosis",
+        "low_beta"
+      ],
+      "reason": "波动大小不等于方向，还要区分一般颠簸、资产自身波动和极端尾部风险。"
+    },
+    {
+      "condition": "range_bound is bounded",
+      "matched_focus": [
+        "volatility_realized",
+        "correlation_structure",
+        "maximum_drawdown"
+      ],
+      "reason": "上下界观点先映射为波动和风险解释；一期不映射具体期权合约。"
+    },
+    {
+      "condition": "the question contains why or asks for attribution",
+      "matched_focus": [
+        "market_beta",
+        "industry_beta",
+        "multi_factor",
+        "correlation_structure"
+      ],
+      "reason": "为什么涨跌应进入归因框架，按贡献排序并诚实报告残差。"
+    }
+  ],
+  "example_mappings": [
+    {
+      "user_says": "我觉得它一个月能涨5%",
+      "parsed": {
+        "direction": "bullish",
+        "magnitude": "unspecified",
+        "timeframe": "short",
+        "timeframe_raw": "一个月",
+        "numeric_statements": [
+          {
+            "verbatim": "涨5%",
+            "value": 5,
+            "unit": "%",
+            "sign": "positive",
+            "bound_type": "point_estimate",
+            "time_reference": "一个月"
+          }
+        ]
+      },
+      "matched_focus": [
+        "momentum_6_1",
+        "short_term_reversal",
+        "trend_strength"
+      ],
+      "note": "5% 属于小、中还是大必须由资产与期限配置决定，LLM 不自行判断。"
+    },
+    {
+      "user_says": "最多涨10%，最多跌5%",
+      "parsed": {
+        "direction": "neutral",
+        "magnitude": "unspecified",
+        "timeframe": "unspecified",
+        "range_bound": "bounded"
+      },
+      "matched_focus": [
+        "volatility_realized",
+        "correlation_structure",
+        "maximum_drawdown"
+      ]
+    },
+    {
+      "user_says": "接下来会很平静",
+      "parsed": {
+        "direction": "unspecified",
+        "volatility_view": "low",
+        "timeframe": "unspecified"
+      },
+      "matched_focus": [
+        "volatility_realized",
+        "idiosyncratic_volatility",
+        "low_beta"
+      ]
+    },
+    {
+      "user_says": "担心大跌但不确定",
+      "parsed": {
+        "direction": "bearish",
+        "magnitude": "large",
+        "timeframe": "unspecified"
+      },
+      "matched_focus": [
+        "maximum_drawdown",
+        "skewness",
+        "kurtosis",
+        "low_beta"
+      ]
+    }
+  ],
+  "output_template": {
+    "structure": [
+      "观点确认",
+      "已知与未说明的参数",
+      "匹配因子及匹配原因",
+      "支持证据与对立证据",
+      "三情景解释",
+      "数据可用状态",
+      "风险提示",
+      "来源"
+    ],
+    "plain": "先复述用户观点并保留原数字，再说明哪些参数没有说清；然后给出互相制衡的因子视角，不把解释写成买卖建议。"
+  },
+  "constraints": [
+    "匹配因子只决定检索与解释重点，不代表推荐配置或交易方向。",
+    "不得基于单一因子给方向性结论；至少给出一个支持视角和一个对立视角。",
+    "data_availability.current=false 的因子只返回定义、所需数据和历史证据，不返回当前计算结果。",
+    "一期不做期权合约、行权价、到期日或仓位匹配。",
+    "统一附“仅供学习参考，不构成任何投资建议”。"
+  ]
+}

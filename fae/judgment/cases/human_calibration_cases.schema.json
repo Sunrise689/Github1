@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "description": "FAE 人工校准 JSONL 记录格式。每行一条记录，人工记录优先于自动裁决。",
+  "required": [
+    "calibration_id",
+    "asset_id",
+    "symbol",
+    "timeframe",
+    "winner_pattern_id",
+    "reason"
+  ],
+  "properties": {
+    "calibration_id": "字符串，人工修改编号",
+    "asset_id": "三位审计编号，例如 006",
+    "symbol": "资产代码，例如 usAAPL",
+    "timeframe": "monthly / weekly / daily",
+    "scope": {
+      "start": "可选，候选结构起始 K 线序号",
+      "end": "可选，候选结构结束 K 线序号"
+    },
+    "winner_pattern_id": "人工确认的 canonical pattern_id；若明确无形态，使用 manual_state=no_pattern",
+    "remove_pattern_ids": "可选，人工明确删除的形态编号数组",
+    "keep_pattern_ids": "可选，除主形态外仍保留的形态编号数组",
+    "reason": "人工判断依据，必须写清楚",
+    "timestamp": "可选，ISO 8601 时间"
+  },
+  "example": {
+    "calibration_id": "A006-D-001",
+    "asset_id": "006",
+    "symbol": "usAAPL",
+    "timeframe": "daily",
+    "scope": {"start": 80, "end": 110},
+    "winner_pattern_id": "double_top",
+    "remove_pattern_ids": ["rounding_top"],
+    "keep_pattern_ids": [],
+    "reason": "两个峰间隔和颈线结构满足双顶，圆弧顶只是从属近似。"
+  }
+}

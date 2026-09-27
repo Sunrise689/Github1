@@ -1,0 +1,485 @@
+{
+  "schema_version": "2.0",
+  "generated": "2026-08-13T20:28:19.809520+08:00",
+  "compiler_version": "3.0",
+  "sources": [
+    {
+      "source_id": "book_active_portfolio_management",
+      "work_id": "active_portfolio_management_2e",
+      "local_file": "Active_portfolio_management_Grinold_Kahn.pdf",
+      "title": "Active Portfolio Management: A Quantitative Approach for Producing Superior Returns and Controlling Risk",
+      "authors": [
+        "Richard C. Grinold",
+        "Ronald N. Kahn"
+      ],
+      "kind": "academic_textbook",
+      "authority_level": "secondary_methodology",
+      "market_scope": "global",
+      "language": "en",
+      "status": "compiled",
+      "sha256": "d44e78a7fb59ff2d282584cd7748ba89192875bb90dbb5d765badc58b0d0f6dd",
+      "pdf_pages": 632,
+      "text_methods": {
+        "text": 606,
+        "ocr": 26
+      },
+      "mean_text_confidence": 0.8963,
+      "knowledge_records": 132,
+      "evidence_records": 0
+    },
+    {
+      "source_id": "book_expected_returns",
+      "work_id": "expected_returns_ilmanen",
+      "local_file": "Expected_Returns_Ilmanen.pdf",
+      "title": "Expected Returns: An Investor's Guide to Harvesting Market Rewards",
+      "authors": [
+        "Antti Ilmanen"
+      ],
+      "kind": "academic_textbook",
+      "authority_level": "secondary_synthesis",
+      "market_scope": "global",
+      "language": "en",
+      "status": "compiled",
+      "sha256": "459c616cd0b6e7bf1219b7b31ed97c1aa1e6ae0effaae1d27a2381a63d4273b2",
+      "pdf_pages": 595,
+      "text_methods": {
+        "text": 566,
+        "ocr": 29
+      },
+      "mean_text_confidence": 0.9036,
+      "knowledge_records": 178,
+      "evidence_records": 0
+    },
+    {
+      "source_id": "book_quant_equity_pm",
+      "work_id": "quantitative_equity_portfolio_management",
+      "local_file": "Quantitative_equity_portfolio_management.pdf",
+      "title": "Quantitative Equity Portfolio Management",
+      "authors": [
+        "Ludwig B. Chincarini",
+        "Daehwan Kim"
+      ],
+      "kind": "academic_textbook",
+      "authority_level": "secondary_methodology",
+      "market_scope": "global",
+      "language": "en",
+      "status": "compiled",
+      "sha256": "3347ae14b5ae0465cab8ac44b7c7b520ebf32ce5ccd1c39539e1d75353914416",
+      "pdf_pages": 704,
+      "text_methods": {
+        "text": 693,
+        "ocr": 11
+      },
+      "mean_text_confidence": 0.9218,
+      "knowledge_records": 184,
+      "evidence_records": 0
+    },
+    {
+      "source_id": "book_quant_momentum",
+      "work_id": "quantitative_momentum",
+      "local_file": "Quantitative_Momentum_Wes_Gray.pdf",
+      "title": "Quantitative Momentum",
+      "authors": [
+        "Wesley R. Gray",
+        "Jack R. Vogel"
+      ],
+      "kind": "practitioner_book",
+      "authority_level": "secondary_practitioner",
+      "market_scope": "US",
+      "language": "en",
+      "status": "compiled",
+      "sha256": "115d87f385f184ea8bc6f6926c82a6be8b582e6c8ef2625c14f62d06242b07a6",
+      "pdf_pages": 204,
+      "text_methods": {
+        "text": 196,
+        "ocr": 8
+      },
+      "mean_text_confidence": 0.8953,
+      "knowledge_records": 90,
+      "evidence_records": 0
+    },
+    {
+      "source_id": "book_quant_value",
+      "work_id": "quantitative_value",
+      "local_file": "Quantitative_Value_Wes_Gray_Carlisle.pdf",
+      "title": "Quantitative Value",
+      "authors": [
+        "Wesley R. Gray",
+        "Tobias E. Carlisle"
+      ],
+      "kind": "practitioner_book",
+      "authority_level": "secondary_practitioner",
+      "market_scope": "US",
+      "language": "en",
+      "status": "compiled",
+      "sha256": "d1242ce9db87c23f0bc3698dc86417a31a2b45fdc97295bf5eb99c60c33bb6f5",
+      "pdf_pages": 298,
+      "text_methods": {
+        "text": 289,
+        "ocr": 9
+      },
+      "mean_text_confidence": 0.9458,
+      "knowledge_records": 80,
+      "evidence_records": 0
+    },
+    {
+      "source_id": "book_magic_formula_en",
+      "work_id": "greenblatt_magic_formula",
+      "local_file": "The_Little_Book_That_Still_Beats_the_Market.pdf",
+      "title": "The Little Book That Still Beats the Market",
+      "authors": [
+        "Joel Greenblatt"
+      ],
+      "kind": "practitioner_book",
+      "authority_level": "supplementary_practitioner",
+      "market_scope": "US",
+      "language": "en",
+      "status": "compiled",
+      "sha256": "c1c8e0faaaaae5ae25b01f0acb90c19cb5e861561ad57459154418610891bd41",
+      "pdf_pages": 216,
+      "text_methods": {
+        "text": 201,
+        "ocr": 15
+      },
+      "mean_text_confidence": 0.887,
+      "knowledge_records": 25,
+      "evidence_records": 0
+    },
+    {
+      "source_id": "book_factor_guide",
+      "work_id": "complete_guide_factor_based_investing",
+      "local_file": "Your_Complete_Guide_to_Factor-Based_Investing_Swedroe.pdf",
+      "title": "Your Complete Guide to Factor-Based Investing",
+      "authors": [
+        "Andrew L. Berkin",
+        "Larry E. Swedroe"
+      ],
+      "kind": "practitioner_book",
+      "authority_level": "secondary_synthesis",
+      "market_scope": "global",
+      "language": "en",
+      "status": "compiled",
+      "sha256": "096ce0e6dedecf14a339607fbc99421e8b2d4640c9b0970ac916ab084b1c08f9",
+      "pdf_pages": 351,
+      "text_methods": {
+        "text": 339,
+        "ocr": 11
+      },
+      "mean_text_confidence": 0.9476,
+      "knowledge_records": 172,
+      "evidence_records": 0
+    },
+    {
+      "source_id": "book_factor_investing_cn",
+      "work_id": "factor_investing_methods_practice",
+      "local_file": "因子投资_14838713.pdf",
+      "title": "因子投资：方法与实践",
+      "authors": [
+        "石川",
+        "刘洋溢",
+        "连祥斌"
+      ],
+      "kind": "academic_textbook",
+      "authority_level": "secondary_methodology",
+      "market_scope": "CN",
+      "language": "zh",
+      "status": "compiled",
+      "sha256": "dcf1a9beb089c35a1110308c48669bc61b0a113c20643b36451e19faf077a33a",
+      "pdf_pages": 423,
+      "text_methods": {
+        "text": 412,
+        "ocr": 11
+      },
+      "mean_text_confidence": 0.8841,
+      "knowledge_records": 180,
+      "evidence_records": 0
+    },
+    {
+      "source_id": "book_magic_formula_zh",
+      "work_id": "greenblatt_magic_formula",
+      "local_file": "股市稳赚_乔尔·格林布拉特.pdf",
+      "title": "股市稳赚",
+      "authors": [
+        "Joel Greenblatt"
+      ],
+      "kind": "translated_practitioner_book",
+      "authority_level": "supplementary_practitioner",
+      "market_scope": "US",
+      "language": "zh",
+      "related_source_id": "book_magic_formula_en",
+      "status": "compiled",
+      "sha256": "e4bea11c13fe1d22217e70ede667326e9964e851c5e48c36122db01ff90cf7f0",
+      "pdf_pages": 122,
+      "text_methods": {
+        "text": 112,
+        "ocr": 10
+      },
+      "mean_text_confidence": 0.8983,
+      "knowledge_records": 4,
+      "evidence_records": 0
+    },
+    {
+      "source_id": "paper_aqr_factor_2023",
+      "work_id": "aqr_fact_fiction_factor_2023",
+      "local_file": "AQRJPMQuant23FactFictionandFactorInvesting.pdf",
+      "title": "Fact, Fiction, and Factor Investing",
+      "authors": [
+        "Michele Aghassi",
+        "Cliff Asness",
+        "Andrea Frazzini",
+        "Ronen Israel",
+        "Tobias Moskowitz"
+      ],
+      "kind": "peer_reviewed_paper",
+      "authority_level": "primary_synthesis",
+      "market_scope": "global",
+      "language": "en",
+      "status": "compiled",
+      "sha256": "14eeaa25656d375d3cc4fd43c09eb6ae994dd92d12f4fadc1ddb539e97606121",
+      "pdf_pages": 40,
+      "text_methods": {
+        "text": 40
+      },
+      "mean_text_confidence": 0.9114,
+      "knowledge_records": 54,
+      "evidence_records": 1
+    },
+    {
+      "source_id": "paper_ff1993",
+      "work_id": "ff_common_risk_1993",
+      "local_file": "FF_Common_risk.pdf",
+      "title": "Common Risk Factors in the Returns on Stocks and Bonds",
+      "authors": [
+        "Eugene F. Fama",
+        "Kenneth R. French"
+      ],
+      "kind": "peer_reviewed_paper",
+      "authority_level": "primary_research",
+      "market_scope": "US",
+      "language": "en",
+      "force_ocr": true,
+      "status": "compiled",
+      "sha256": "a03081c7d2a8296607f28c84d9fd77db6a10ec5422a857182642bb538fd268ca",
+      "pdf_pages": 54,
+      "text_methods": {
+        "ocr": 54
+      },
+      "mean_text_confidence": 0.9492,
+      "knowledge_records": 52,
+      "evidence_records": 1
+    },
+    {
+      "source_id": "paper_novy_marx_2013",
+      "work_id": "novy_marx_profitability_2013",
+      "local_file": "Novy-Marx_Gross-Profitability-Anomaly_JFE_2013.pdf",
+      "title": "The Other Side of Value: The Gross Profitability Premium",
+      "authors": [
+        "Robert Novy-Marx"
+      ],
+      "kind": "peer_reviewed_paper",
+      "authority_level": "primary_research",
+      "market_scope": "US",
+      "language": "en",
+      "status": "compiled",
+      "sha256": "06b43f29fdcf8a2bc83ad5a87964e9aeb3a3272ee0597ad1e7164156e3f7c2a7",
+      "pdf_pages": 28,
+      "text_methods": {
+        "text": 28
+      },
+      "mean_text_confidence": 0.887,
+      "knowledge_records": 40,
+      "evidence_records": 1
+    },
+    {
+      "source_id": "paper_price_support_2014",
+      "work_id": "price_support_bank_funds_2014",
+      "local_file": "ssrn-1652050.pdf",
+      "title": "Price Support by Bank-Affiliated Mutual Funds",
+      "authors": [
+        "Benjamin Golez",
+        "Jose M. Marin"
+      ],
+      "kind": "working_paper",
+      "authority_level": "supplementary_research",
+      "market_scope": "ES",
+      "language": "en",
+      "status": "compiled",
+      "sha256": "a321d7215737a10e3c6bf39003f2961a1b2f5fb0dc6e7e23cc7be90d40bf2879",
+      "pdf_pages": 76,
+      "text_methods": {
+        "text": 76
+      },
+      "mean_text_confidence": 0.9157,
+      "knowledge_records": 15,
+      "evidence_records": 0
+    },
+    {
+      "source_id": "paper_aqr_momentum_2014",
+      "work_id": "aqr_fact_fiction_momentum_2014",
+      "local_file": "ssrn-2435323.pdf",
+      "title": "Fact, Fiction and Momentum Investing",
+      "authors": [
+        "Clifford S. Asness",
+        "Andrea Frazzini",
+        "Ronen Israel",
+        "Tobias J. Moskowitz"
+      ],
+      "kind": "journal_article",
+      "authority_level": "primary_synthesis",
+      "market_scope": "global",
+      "language": "en",
+      "status": "compiled",
+      "sha256": "b725977c8e5a32786359ad0b62efc3f3cd0edcf7f34d1ba9a69d2023ed3852c2",
+      "pdf_pages": 26,
+      "text_methods": {
+        "text": 26
+      },
+      "mean_text_confidence": 0.9345,
+      "knowledge_records": 28,
+      "evidence_records": 1
+    },
+    {
+      "source_id": "paper_aqr_value_2015",
+      "work_id": "aqr_fact_fiction_value_2015",
+      "local_file": "ssrn-2595747.pdf",
+      "title": "Fact, Fiction, and Value Investing",
+      "authors": [
+        "Clifford S. Asness",
+        "Andrea Frazzini",
+        "Ronen Israel",
+        "Tobias J. Moskowitz"
+      ],
+      "kind": "journal_article",
+      "authority_level": "primary_synthesis",
+      "market_scope": "global",
+      "language": "en",
+      "status": "compiled",
+      "sha256": "19eb65c2a62e7aaf307e55ae35efe916b66a277c951b34049070d27a10ab912f",
+      "pdf_pages": 31,
+      "text_methods": {
+        "text": 31
+      },
+      "mean_text_confidence": 0.9339,
+      "knowledge_records": 37,
+      "evidence_records": 1
+    },
+    {
+      "source_id": "paper_carhart_1997",
+      "work_id": "carhart_persistence_1997",
+      "local_file": "The Journal of Finance - 2012 - Carhart - On Persistence in Mutual Fund Performance.pdf",
+      "title": "On Persistence in Mutual Fund Performance",
+      "authors": [
+        "Mark M. Carhart"
+      ],
+      "kind": "peer_reviewed_paper",
+      "authority_level": "primary_research",
+      "market_scope": "US",
+      "language": "en",
+      "status": "compiled",
+      "sha256": "746f959372dee1e878bb318c11bacc5614017d409cb7fdadcb213ccf3c41a8df",
+      "pdf_pages": 26,
+      "text_methods": {
+        "text": 26
+      },
+      "mean_text_confidence": 0.9261,
+      "knowledge_records": 30,
+      "evidence_records": 1
+    },
+    {
+      "source_id": "paper_ff1992",
+      "work_id": "ff_cross_section_1992",
+      "local_file": "The Journal of Finance - June 1992 - FAMA - The Cross‐Section of Expected Stock Returns.pdf",
+      "title": "The Cross-Section of Expected Stock Returns",
+      "authors": [
+        "Eugene F. Fama",
+        "Kenneth R. French"
+      ],
+      "kind": "peer_reviewed_paper",
+      "authority_level": "primary_research",
+      "market_scope": "US",
+      "language": "en",
+      "status": "compiled",
+      "sha256": "e5c7db434697628557d906e1fd2e86cefdc19f341399046f32f4f15bca6a700f",
+      "pdf_pages": 39,
+      "text_methods": {
+        "text": 39
+      },
+      "mean_text_confidence": 0.8986,
+      "knowledge_records": 20,
+      "evidence_records": 2
+    },
+    {
+      "source_id": "paper_ff2015_nber",
+      "work_id": "ff_five_factor_2015",
+      "local_file": "Fama_French_Five_Factor_NBER_w20857.pdf",
+      "title": "A Five-Factor Asset Pricing Model",
+      "authors": [
+        "Eugene F. Fama",
+        "Kenneth R. French"
+      ],
+      "kind": "working_paper",
+      "authority_level": "primary_research",
+      "market_scope": "US",
+      "language": "en",
+      "source_url": "https://www.nber.org/papers/w20857",
+      "status": "compiled",
+      "sha256": "8bdd8c12d279a545d5bb57e2212048cb1bab07302f2a298426330156b8df2fe4",
+      "pdf_pages": 57,
+      "text_methods": {
+        "text": 57
+      },
+      "mean_text_confidence": 0.9095,
+      "knowledge_records": 9,
+      "evidence_records": 1
+    },
+    {
+      "source_id": "paper_aqr_low_risk_2020",
+      "work_id": "aqr_low_risk_2020",
+      "local_file": "AQR_Fact_and_Fiction_about_Low_Risk_Investing_2020.pdf",
+      "title": "Fact and Fiction about Low-Risk Investing",
+      "authors": [
+        "Ron Alquist",
+        "Andrea Frazzini",
+        "Antti Ilmanen",
+        "Lasse Heje Pedersen"
+      ],
+      "kind": "journal_article",
+      "authority_level": "primary_synthesis",
+      "market_scope": "global",
+      "language": "en",
+      "source_url": "https://www.aqr.com/Insights/Research/Journal-Article/Fact-and-Fiction-About-Low-Risk-Investing",
+      "optional_remote": true,
+      "status": "missing_optional",
+      "sha256": "",
+      "pdf_pages": 0,
+      "text_methods": {},
+      "mean_text_confidence": 0,
+      "knowledge_records": 0,
+      "evidence_records": 0
+    }
+  ],
+  "duplicates": [
+    {
+      "source_id": null,
+      "duplicate_of": "paper_novy_marx_2013",
+      "sha256": "06b43f29fdcf8a2bc83ad5a87964e9aeb3a3272ee0597ad1e7164156e3f7c2a7",
+      "file": "Novy-Marx_Gross-Profitability-Anomaly_JFE_2013 (1).pdf"
+    }
+  ],
+  "missing": [
+    {
+      "source_id": "paper_aqr_low_risk_2020",
+      "local_file": "AQR_Fact_and_Fiction_about_Low_Risk_Investing_2020.pdf",
+      "optional_remote": true
+    }
+  ],
+  "policy": {
+    "raw_text_is_internal_build_input_only": true,
+    "all_records_require_source_pages": true,
+    "quality_below_0_65_is_review_only": true,
+    "china_material_backend_allowed": true,
+    "china_frontend_visibility_is_display_policy": true,
+    "evidence_pending_is_not_empirical_evidence": true,
+    "pending_records_must_not_contain_invented_pages_or_results": true
+  }
+}

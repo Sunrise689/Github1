@@ -1,0 +1,25 @@
+# Local credentials and user-specific configuration
+.env
+.env.*
+!.env.example
+**/project.private.config.json
+*.local
+
+# Python caches, logs, downloaded archives, and generated reports
+**/__pycache__/
+*.py[cod]
+**/*.log
+*.zip
+fae/preview/
+qte/reports/
+scripts/tmp/
+wechat-miniprogram/deploy/
+wechat-miniprogram/*.png
+wechat-miniprogram/*.jpg
+
+# Local development dependencies
+.venv/
+venv/
+node_modules/
+
+wechat-miniprogram/docs/

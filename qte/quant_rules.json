@@ -1,0 +1,99 @@
+{
+  "schema_version": "2.0",
+  "purpose": "QTE 的知识消费、验证与表达规则。量化负责算，QTE 负责讲清楚。",
+  "product_principles": [
+    "复杂计算和完整证据保留在后端；前端先讲用户需要理解的结论，再按需展开技术细节。",
+    "简单表达不是删掉风险、口径或来源，而是把它们翻译成普通投资者能理解的话。",
+    "QTE 是解释引擎，不以技术复杂度展示能力，也不生成买卖决策。"
+  ],
+  "rules": [
+    {
+      "rule_id": "source_traceability",
+      "description": "每条知识必须有 source_id、来源哈希和 PDF 页码；每条官方数据证据必须有下载地址、数据版本、样本区间、哈希和计算公式。"
+    },
+    {
+      "rule_id": "no_fabricated_evidence",
+      "description": "不得补写资料中不存在的数字、页码或结论；无法核实的来源必须标为 missing、registered_not_compiled 或 review_only。"
+    },
+    {
+      "rule_id": "historical_qualifier",
+      "description": "所有实证表述必须限定为历史样本或过去区间，并明确不预示未来。"
+    },
+    {
+      "rule_id": "caveat_required",
+      "description": "每条可进入引擎的知识或证据必须同时带 caveat；缺少风险和失效情景的记录不得进入运行时索引。"
+    },
+    {
+      "rule_id": "validation_bundle",
+      "description": "评价因子时同时检查样本外、多市场、交易成本、换手、幸存者偏差、信息泄漏、多重检验和经济解释。"
+    },
+    {
+      "rule_id": "factor_definition_separation",
+      "description": "相近但不同的口径必须分开：HML 不等于低 PE；RMW 不等于 ROE；毛盈利能力不等于 RMW；低波动不等于低 Beta。"
+    },
+    {
+      "rule_id": "official_data_calculation",
+      "description": "官方因子序列只生成可复算的描述性历史统计；均值、波动、回撤等必须列公式，且不得改写成未来预测。"
+    },
+    {
+      "rule_id": "macro_context_only",
+      "description": "FRED、世界银行、IMF、国家统计局等宏观数据只作为环境背景；未经专门识别设计，不得从相关性推出因果关系。"
+    },
+    {
+      "rule_id": "china_backend_allowed",
+      "description": "中国书籍、案例和官方数据允许进入后端知识库并参与内部检索；不得在编译阶段因市场标签而删除。"
+    },
+    {
+      "rule_id": "china_frontend_policy",
+      "description": "是否向前端展示中国案例由 display_policy 和调用方展示上下文控制；当前默认可隐藏，但明确中国市场问题或内部审核可启用。"
+    },
+    {
+      "rule_id": "plain_language_first",
+      "description": "面向用户先说明它是什么、这个数字说明什么、不能说明什么；公式、希腊字母和模型细节作为按需展开层。"
+    },
+    {
+      "rule_id": "numbers_unchanged",
+      "description": "翻译层不得改写数值、正负号、百分号、区间或单位，只能增加解释。"
+    },
+    {
+      "rule_id": "no_recommendation",
+      "description": "不得输出涨跌预测、个性化买卖建议、确定性措辞或收益承诺。"
+    },
+    {
+      "rule_id": "cross_factor_validation",
+      "description": "输出因子分析时必须执行交叉检验：动量与短期反转、估值与动量（低估值加低动量可能是价值陷阱）、高波动与低Beta、行业Beta与市场Beta、残差动量与总动量。"
+    },
+    {
+      "rule_id": "multi_level_beta",
+      "description": "Beta必须分层报告：市场Beta和行业Beta同时展示。不得只报单一Beta；行业指数数据不可用时必须声明“行业Beta暂不可算”。"
+    },
+    {
+      "rule_id": "factor_data_availability",
+      "description": "因子结果必须标注数据可用状态。data_availability.current=false的因子不得输出当前计算结果，只能输出定义、所需数据和历史证据；计算引擎未实现时，即使current=true也不得让LLM代算。"
+    },
+    {
+      "rule_id": "industry_context_required",
+      "description": "个股因子分析必须包含行业背景：行业近12月收益、行业相对大盘强弱、个股在行业内的相对位置；任何一项数据不可用时必须逐项标明，不得补数。"
+    },
+    {
+      "rule_id": "scenario_analysis",
+      "description": "归因输出必须覆盖因子延续、因子反转、因子横盘三种情景。历史概率仅在存在同口径、可复算数据与来源时展示，否则必须明确标为不可用并附caveat。"
+    },
+    {
+      "rule_id": "no_single_factor_conclusion",
+      "description": "不得基于单一因子给方向性结论。至少两个独立因子交叉验证后才能给倾向性描述，同时必须附对立证据、残差和历史限定语。"
+    },
+    {
+      "rule_id": "r_squared_interpretation",
+      "description": "归因模型R²解释力分档（行业通行经验阈值）：R²<0.15判定为基本无解释力，输出必须明说残差主导、结论仅供参考；0.15≤R²<0.5为解释力有限；R²≥0.5为解释力较强。R²<0.15时不得把因子贡献包装成可靠结论。"
+    },
+    {
+      "rule_id": "factor_selection_display",
+      "description": "前端默认因子选取规则：按贡献绝对值从大到小累加，累计能解释区间涨跌50%以上即取该集合；达不到50%则取前五大；均不足时全部呈现并标注。权重极小（排序沉底）的因子不进入主展示。"
+    },
+    {
+      "rule_id": "catalog_scope",
+      "description": "继续学习用因子全集只收录有实际意义的核心因子；主观类（如分析师情绪）、无法精确测量类（如拥挤度）、无实证支撑类不收录，并如实说明剔除原因。"
+    }
+  ]
+}

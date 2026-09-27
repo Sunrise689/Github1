@@ -1,0 +1,192 @@
+{
+  "schema_version": "1.0",
+  "purpose": "QTE 因子归因分析方法论。定义如何把资产或组合的历史收益拆解为因子贡献、Alpha 与残差，并把结果翻译成大白话。本文件是知识规范，不含计算代码。",
+  "scope": {
+    "artifact_type": "knowledge_specification",
+    "numerical_engine_included": false,
+    "causal_claim_allowed": false,
+    "plain": "归因回答的是“哪些已登记因子在这段历史里与涨跌最相关、贡献多大”，不是证明真正的因果。"
+  },
+  "core_model": {
+    "name": "多因子收益分解",
+    "formula": "R_asset,t = alpha + sum(beta_i * F_i,t) + epsilon_t",
+    "plain": "一段历史涨跌可以拆成：大盘带动、行业带动、各风格因子带动、模型截距，以及目前解释不了的残差。",
+    "components": [
+      {
+        "key": "alpha",
+        "plain": "扣掉模型已包含的因子后，样本里平均剩下的那一截。可能来自能力，也可能来自遗漏变量、费用口径、运气或过拟合。"
+      },
+      {
+        "key": "beta_i",
+        "plain": "资产对第 i 个因子的历史敏感度；它依赖基准、窗口、频率和模型设定。"
+      },
+      {
+        "key": "F_i",
+        "plain": "第 i 个因子在对应区间里的历史收益。"
+      },
+      {
+        "key": "epsilon_t",
+        "plain": "每一期实际结果减去模型解释部分后剩下的残差。残差不等于纯随机，也不能被强行讲成某个故事。"
+      }
+    ]
+  },
+  "required_context": [
+    "asset_or_portfolio_id",
+    "analysis_start",
+    "analysis_end",
+    "return_frequency",
+    "market_benchmark",
+    "industry_classification_and_benchmark",
+    "factor_model_version",
+    "return_and_corporate_action_convention",
+    "estimation_window",
+    "data_version"
+  ],
+  "contribution_rule": {
+    "return_contribution": {
+      "formula": "contribution_i = estimated_beta_i * realized_factor_return_i",
+      "plain": "敏感度乘上该因子这段时间的实际表现，就是它对这段涨跌的模型贡献。",
+      "constraint": "必须与模型频率、收益口径和区间一致；不可把年化 Beta 直接乘不同口径的区间收益。"
+    },
+    "risk_contribution": {
+      "exposure_scale": "|estimated_beta_i| * sigma(F_i)",
+      "exposure_scale_plain": "这是粗略的单因子风险尺度，不是完整组合风险贡献。",
+      "portfolio_marginal_formula": "component_risk_i = weight_i * (covariance_matrix * weights)_i / portfolio_volatility",
+      "constraint": "存在相关因子时，必须使用协方差矩阵计算组合风险贡献；不得把 beta_i * sigma(F_i) 冒充精确风险贡献。"
+    },
+    "ranking": "按绝对收益贡献降序排列，只展示前 3 至 5 个主导项，同时保留正负号和未展示项合计。",
+    "plain": "哪个因子对这次涨跌的出力最大，就排在最前面；贡献很小的先折叠，不假装每个指标都同样重要。"
+  },
+  "multi_level_beta": {
+    "description": "Beta 必须分层报告，不得只给单一 Beta。",
+    "levels": [
+      {
+        "level": "market_beta",
+        "benchmark_rule": "使用与资产市场、币种和分析目的匹配的宽基指数，并记录指数代码。",
+        "plain": "对大盘的历史敏感度"
+      },
+      {
+        "level": "industry_beta",
+        "benchmark_rule": "使用登记过分类标准和版本的所属行业指数；行业数据不可用时标 unavailable。",
+        "plain": "对所在行业的历史敏感度"
+      },
+      {
+        "level": "residual",
+        "benchmark_rule": "扣除已登记市场、行业与风格因子后的剩余项。",
+        "plain": "大盘、行业和已知风格都解释不了的部分"
+      }
+    ],
+    "joint_interpretation": "市场 Beta 与行业 Beta 必须同时解释；二者回归设定、共线性和先后残差化方法也必须登记。"
+  },
+  "brinson_attribution": {
+    "description": "组合相对基准的 Brinson 归因，用于解释行业配置与行业内选股贡献；它与时间序列因子回归是两套不同视角，不得混为一谈。",
+    "components": [
+      {
+        "key": "allocation",
+        "plain": "因为相对基准多放或少放了某些行业而产生的部分"
+      },
+      {
+        "key": "selection",
+        "plain": "因为在各行业里选到的资产相对行业基准表现不同而产生的部分"
+      },
+      {
+        "key": "interaction",
+        "plain": "行业配置偏离与行业内选择同时发生形成的交叉部分"
+      }
+    ],
+    "required_convention": "必须登记 Brinson-Fachler、Brinson-Hood-Beebower 或其他具体变体、基准权重、收益连接方法与多期链接方法。"
+  },
+  "residual_interpretation": {
+    "residual_share_formula": "abs(residual_return) / (abs(alpha_contribution) + sum(abs(factor_contribution_i)) + abs(residual_return))",
+    "threshold": 0.4,
+    "rule": "按上述口径计算的残差占比超过 40% 时，必须明确告知用户“大部分涨跌暂时无法用已知因子解释”，不得强行归因。",
+    "plain": "已知因素只能解释一小半时，就老实说模型解释得不够，不能拿新闻或故事硬填空白。"
+  },
+  "r_squared_reporting": {
+    "required": true,
+    "rule": "每次回归归因必须报告样本内 R²、调整后 R²、样本区间与频率；有样本外结果时另行报告，不得混写。",
+    "translation": [
+      {
+        "min_inclusive": 0.0,
+        "max_exclusive": 0.2,
+        "plain": "在这段样本里基本各走各的，当前模型解释力很弱。"
+      },
+      {
+        "min_inclusive": 0.2,
+        "max_exclusive": 0.6,
+        "plain": "在这段样本里有一定联动，当前模型能解释一部分涨跌。"
+      },
+      {
+        "min_inclusive": 0.6,
+        "max_inclusive": 1.0,
+        "plain": "在这段样本里联动较强，当前模型能解释较多涨跌。"
+      }
+    ],
+    "caveat": "R² 高不等于存在因果，也不代表未来预测准确；R² 低也不证明因子没有任何经济意义。"
+  },
+  "scenario_output": {
+    "required_scenarios": [
+      {
+        "scenario_id": "factor_continuation",
+        "name": "因子延续",
+        "question": "如果主导因子继续当前方向，模型中的主要贡献会怎样变化？"
+      },
+      {
+        "scenario_id": "factor_reversal",
+        "name": "因子反转",
+        "question": "如果主导因子反向变化，主要风险和对立证据是什么？"
+      },
+      {
+        "scenario_id": "factor_flat",
+        "name": "因子横盘",
+        "question": "如果主导因子不再贡献，残差和其他因子会占多大比重？"
+      }
+    ],
+    "historical_probability_contract": {
+      "allowed_status": [
+        "available",
+        "unavailable"
+      ],
+      "available_requires": [
+        "numeric_probability",
+        "event_definition",
+        "sample_start",
+        "sample_end",
+        "sample_size",
+        "calculation",
+        "data_source_id",
+        "data_version",
+        "caveat"
+      ],
+      "unavailable_output": "当前没有同口径、可复算的历史概率，不能提供数字概率。",
+      "rule": "没有满足全部来源与计算字段时必须使用 unavailable；不得由 LLM 猜测、补齐或把定性词改写成概率。"
+    },
+    "mandatory_fields": [
+      "scenario_id",
+      "assumption",
+      "historical_probability",
+      "factor_effects",
+      "opposing_evidence",
+      "caveat"
+    ]
+  },
+  "output_contract": {
+    "order": [
+      "analysis_context",
+      "model_fit",
+      "top_contributions",
+      "unshown_contribution_total",
+      "alpha",
+      "residual",
+      "three_scenarios",
+      "data_and_method_caveats",
+      "sources"
+    ],
+    "top_contribution_count": {
+      "min": 3,
+      "max": 5
+    },
+    "language_rule": "先用大白话说明结论，再展示模型口径；所有数字、正负号、单位、区间和 unavailable 状态必须原样保留。",
+    "disclaimer": "仅供学习参考，不构成任何投资建议。"
+  }
+}

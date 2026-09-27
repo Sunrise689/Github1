@@ -1,0 +1,10 @@
+{
+  "dataset_count": 13,
+  "factor_dataset_count": 3,
+  "macro_dataset_count": 10,
+  "official_data_evidence_count": 6,
+  "registered_not_compiled_source_count": 3,
+  "registry": "C:\\Users\\18295\\Documents\\QoderCN\\2026-08-12\\chat-1\\backend_v10\\qte\\data\\official_dataset_registry.json",
+  "source_index": "C:\\Users\\18295\\Documents\\QoderCN\\2026-08-12\\chat-1\\backend_v10\\qte\\data\\official_data_source_index.json",
+  "evidence": "C:\\Users\\18295\\Documents\\QoderCN\\2026-08-12\\chat-1\\backend_v10\\qte\\evidence\\compiled_official_data_evidence.jsonl"
+}

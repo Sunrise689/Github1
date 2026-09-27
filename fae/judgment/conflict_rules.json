@@ -1,0 +1,218 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-08-01",
+  "purpose": "FAE canonical pattern_id 冲突和优先级规则；量化门控仍具有最高否决权。",
+  "precedence": [
+    "quantitative_gate_veto",
+    "confirmed_chart_over_unconfirmed_candlestick",
+    "higher_timeframe_over_lower_timeframe",
+    "explicit_pattern_conflict",
+    "base_score"
+  ],
+  "rules": [
+    {
+      "rule_id": "conflict_doji_vs_shooting_star",
+      "patterns": ["doji", "shooting_star"],
+      "condition": {"same_window": true},
+      "winner_rule": "confirmed_specific_pattern",
+      "winner_pattern": "shooting_star",
+      "reject_reason": "射击之星需要上涨背景和形体条件；普通十字星不能覆盖已确认的特定形态。",
+      "requires_confirmation": true,
+      "priority": 90
+    },
+    {
+      "rule_id": "conflict_shooting_star_vs_evening_doji_star",
+      "patterns": ["shooting_star", "evening_doji_star"],
+      "condition": {"same_window": true},
+      "winner_rule": "confirmed_specific_pattern",
+      "winner_pattern": "evening_doji_star",
+      "reject_reason": "黄昏十字星是三根K线组合，确认后优先于单根射击之星。",
+      "requires_confirmation": true,
+      "priority": 92
+    },
+    {
+      "rule_id": "conflict_red_three_vs_reverse_three_bullish",
+      "patterns": ["red_three_soldiers", "three_reverse_bullish"],
+      "condition": {"same_window": true},
+      "winner_rule": "contextual_trend",
+      "winner_pattern": "red_three_soldiers",
+      "contextual_alternative": "three_reverse_bullish",
+      "context_field": "trend",
+      "context_values": {"up": "red_three_soldiers", "down": "three_reverse_bullish"},
+      "reject_reason": "红三兵属于一般连续阳线推进，倒三阳必须限制在下降背景；趋势背景决定名称。",
+      "requires_confirmation": true,
+      "priority": 95
+    },
+    {
+      "rule_id": "conflict_red_three_vs_three_black_crows",
+      "patterns": ["red_three_soldiers", "three_black_crows"],
+      "condition": {"same_window": true},
+      "winner_rule": "confirmed_directional_pattern",
+      "reject_reason": "连续三阳和连续三阴方向互斥；保留确认度更高且与量化趋势一致的一方。",
+      "requires_confirmation": true,
+      "priority": 94
+    },
+    {
+      "rule_id": "conflict_bullish_engulfing_vs_evening_doji_star",
+      "patterns": ["bullish_engulfing", "evening_doji_star"],
+      "condition": {"same_window": true},
+      "winner_rule": "confirmed_directional_pattern",
+      "reject_reason": "看涨吞没和黄昏十字星方向相反；必须由确认状态和后续走势裁决。",
+      "requires_confirmation": true,
+      "priority": 90
+    },
+    {
+      "rule_id": "conflict_bullish_engulfing_vs_piercing",
+      "patterns": ["bullish_engulfing", "piercing_pattern"],
+      "condition": {"same_window": true},
+      "winner_rule": "body_containment_specificity",
+      "winner_pattern": "bullish_engulfing",
+      "reject_reason": "后一根阳线实体完全覆盖前一根阴线实体时属于吞没；刺透只允许收盘进入前实体但未越过前开盘价。",
+      "requires_confirmation": false,
+      "priority": 99
+    },
+    {
+      "rule_id": "conflict_bearish_engulfing_vs_dark_cloud",
+      "patterns": ["bearish_engulfing", "dark_cloud_cover"],
+      "condition": {"same_window": true},
+      "winner_rule": "body_containment_specificity",
+      "winner_pattern": "bearish_engulfing",
+      "reject_reason": "后一根阴线实体完全覆盖前一根阳线实体时属于吞没；乌云盖顶只允许收盘深入前实体但仍高于前开盘价。",
+      "requires_confirmation": false,
+      "priority": 99
+    },
+    {
+      "rule_id": "conflict_head_shoulders_top_vs_double_top",
+      "patterns": ["head_and_shoulders_top", "double_top"],
+      "condition": {"same_window": true},
+      "winner_rule": "specific_chart_structure",
+      "winner_pattern": "head_and_shoulders_top",
+      "reject_reason": "同一区域满足完整左肩、头、右肩和两处颈线时，头肩顶比双顶描述更完整；双顶保留在审计层。",
+      "requires_confirmation": false,
+      "priority": 98
+    },
+    {
+      "rule_id": "conflict_head_shoulders_bottom_vs_double_bottom",
+      "patterns": ["head_and_shoulders_bottom", "double_bottom"],
+      "condition": {"same_window": true},
+      "winner_rule": "specific_chart_structure",
+      "winner_pattern": "head_and_shoulders_bottom",
+      "reject_reason": "同一区域满足完整左肩、头、右肩和两处颈线时，头肩底比双底描述更完整；双底保留在审计层。",
+      "requires_confirmation": false,
+      "priority": 98
+    },
+    {
+      "rule_id": "conflict_island_bottom_vs_continuation_down",
+      "patterns": ["island_reversal_bottom"],
+      "condition": {"same_window": true, "evidence": {"continuation_down": true}},
+      "winner_rule": "invalidate_pattern",
+      "winner_pattern": null,
+      "reject_reason": "岛形底后若继续下跌并回补/破坏反向缺口，则底部反转未确认或已失效。",
+      "requires_confirmation": true,
+      "priority": 98
+    },
+    {
+      "rule_id": "conflict_island_top_vs_continuation_up",
+      "patterns": ["island_reversal_top"],
+      "condition": {"same_window": true, "evidence": {"continuation_up": true}},
+      "winner_rule": "invalidate_pattern",
+      "winner_pattern": null,
+      "reject_reason": "岛形顶后若继续上涨并回补/破坏反向缺口，则顶部反转未确认或已失效。",
+      "requires_confirmation": true,
+      "priority": 98
+    },
+    {
+      "rule_id": "conflict_tower_bottom_two_bearish_only",
+      "patterns": ["tower_bottom"],
+      "condition": {"same_window": true, "evidence": {"bearish_bar_count": {"lt": 3}}},
+      "winner_rule": "invalidate_pattern",
+      "winner_pattern": null,
+      "reject_reason": "塔形底需要中间整理过程；只有两根阴线不足以构成塔形底。",
+      "requires_confirmation": true,
+      "priority": 86
+    },
+    {
+      "rule_id": "conflict_high_parallel_one_bullish",
+      "patterns": ["high_parallel_bullish"],
+      "condition": {"same_window": true, "evidence": {"bullish_bar_count": {"lt": 2}}},
+      "winner_rule": "invalidate_pattern",
+      "winner_pattern": null,
+      "reject_reason": "高位并排阳线至少需要两根相近阳线；只有一根阳线不得命名为该形态。",
+      "requires_confirmation": true,
+      "priority": 86
+    },
+    {
+      "rule_id": "conflict_three_falling_non_contiguous",
+      "patterns": ["three_falling_candles"],
+      "condition": {"same_window": true, "evidence": {"consecutive_bearish_bars": {"lt": 3}}},
+      "winner_rule": "invalidate_pattern",
+      "winner_pattern": null,
+      "reject_reason": "下跌三连阴要求连续三根实体阴线；非连续阴线只能作为普通弱势证据。",
+      "requires_confirmation": true,
+      "priority": 88
+    },
+    {
+      "rule_id": "conflict_acceleration_vs_continuous_decline",
+      "patterns": ["acceleration_line", "continuous_decline"],
+      "condition": {"same_window": true},
+      "winner_rule": "quantitative_trend_strength",
+      "reject_reason": "加速趋势和绵绵阴跌代表不同斜率/实体节奏，按量化趋势强度和波动统计保留一方。",
+      "requires_confirmation": true,
+      "priority": 90
+    },
+    {
+      "rule_id": "conflict_duplicate_trendline",
+      "patterns": ["trendline_break", "dynamic_t_line"],
+      "condition": {"same_window": true, "max_separation_bars": 2},
+      "winner_rule": "same_structure_dedup",
+      "reject_reason": "同一位置、同一结构的趋势线不得重复绘制或重复计数。",
+      "requires_confirmation": false,
+      "priority": 84
+    },
+    {
+      "rule_id": "conflict_opposite_reversals_short_term",
+      "patterns": ["double_top", "double_bottom"],
+      "condition": {"same_window": true, "max_separation_bars": 5},
+      "winner_rule": "degrade_opposite_reversals",
+      "reject_reason": "相反方向反转图形短期同时出现时，不能同时作为确定结论；等待颈线突破和更高周期确认。",
+      "requires_confirmation": true,
+      "priority": 96
+    },
+    {
+      "rule_id": "conflict_opposite_head_shoulders_short_term",
+      "patterns": ["head_and_shoulders_top", "head_and_shoulders_bottom"],
+      "condition": {"same_window": true, "max_separation_bars": 5},
+      "winner_rule": "degrade_opposite_reversals",
+      "reject_reason": "相反方向头肩结构短期同时出现时，优先等待颈线确认，不输出双向确定结论。",
+      "requires_confirmation": true,
+      "priority": 97
+    },
+    {
+      "rule_id": "conflict_opposite_islands_short_term",
+      "patterns": ["island_reversal_top", "island_reversal_bottom"],
+      "condition": {"same_window": true, "max_separation_bars": 5},
+      "winner_rule": "degrade_opposite_reversals",
+      "reject_reason": "相反方向岛形结构不能在短期内同时成立；保留缺口确认更完整的一方，否则整体降级。",
+      "requires_confirmation": true,
+      "priority": 99
+    },
+    {
+      "rule_id": "conflict_confirmed_chart_vs_unconfirmed_candle",
+      "patterns": [],
+      "condition": {"same_window": true},
+      "winner_rule": "confirmed_chart_over_unconfirmed_candlestick",
+      "reject_reason": "已确认技术图形优先于未确认的局部K线形态。",
+      "requires_confirmation": true,
+      "priority": 100
+    },
+    {
+      "rule_id": "conflict_higher_timeframe_chart",
+      "patterns": [],
+      "condition": {"same_window": true},
+      "winner_rule": "higher_timeframe_chart",
+      "reject_reason": "周线/月线级别的已确认技术图形优先于日线组合形态。",
+      "requires_confirmation": true,
+      "priority": 100
+    }
+  ]
+}

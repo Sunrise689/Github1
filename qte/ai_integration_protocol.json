@@ -1,0 +1,148 @@
+{
+  "schema_version": "1.0",
+  "purpose": "定义 AI 与 QTE 的三层分离协作协议：入口翻译、确定性计算或检索、出口翻译。LLM 不参与数值计算，只负责自然语言与结构化数据互转。",
+  "scope": {
+    "artifact_type": "integration_specification",
+    "numerical_engine_included": true,
+    "factor_engine_status": "implemented_deterministic_runtime",
+    "implemented_runtime_scope": "factor_engine.py 仅计算已接通数据且实际出现在结构化归因结果中的因子；其余正典因子继续保持定义与历史证据模式。",
+    "llm_may_calculate": false
+  },
+  "three_layer_architecture": [
+    {
+      "layer": 1,
+      "name": "入口翻译",
+      "executor": "LLM_or_deterministic_parser",
+      "role": "把用户原话转换为 view_translation_schema 规定的结构化查询，同时原样保留资产、日期、数值、正负号、单位和歧义。",
+      "example": "“某资产为什么涨”会解析为 attribution 任务；资产无法唯一识别时 clarification_needed=true。"
+    },
+    {
+      "layer": 2,
+      "name": "计算与检索",
+      "executor": "deterministic_python_and_bm25",
+      "role": "factor_engine.py 对已接通数据执行确定性回归与历史归因；retrieval.py 检索结构化知识、证据和规范。",
+      "note": "计算结果必须确定、可复现、可审计；未接通或未实现的正典因子只能返回定义与历史证据。"
+    },
+    {
+      "layer": 3,
+      "name": "出口翻译",
+      "executor": "LLM_or_template_fallback",
+      "role": "把已经计算或检索得到的结构化结果翻译成大白话，术语必须参照 translation_lexicon.json。",
+      "note": "不得重算、补数、改变数字或把 unavailable 改写成推测结果。"
+    }
+  ],
+  "structured_query_contract": {
+    "required": [
+      "raw_user_text",
+      "task",
+      "as_of",
+      "clarification_needed"
+    ],
+    "task_values": [
+      "concept",
+      "evidence",
+      "attribution",
+      "validation",
+      "view_translation"
+    ],
+    "optional": [
+      "asset_id",
+      "market",
+      "timeframe",
+      "factor_ids",
+      "filters",
+      "frontend_context"
+    ],
+    "rule": "缺失值写 null 或 unspecified；不得用模型常识静默补成事实。"
+  },
+  "rag_retrieval_points": [
+    {
+      "trigger": "用户问因子概念",
+      "action": "按 factor_id、中文名、英文名或别名检索 factor_definition、translation_term 与可追溯证据。"
+    },
+    {
+      "trigger": "归因结果需要解释",
+      "action": "按贡献排序后的主导 factor_id 检索定义、证据、失效情景与翻译词条。"
+    },
+    {
+      "trigger": "用户问为什么",
+      "action": "检索 attribution_framework、相关因子定义和 factor_evidence_link；若没有数值归因结果，不得假装已完成归因。"
+    },
+    {
+      "trigger": "用户问是否可靠",
+      "action": "检索 validation_pipeline 与对应 evidence_assessment，逐项显示 passed、failed、not_run 或 not_applicable。"
+    },
+    {
+      "trigger": "用户表达主观看法",
+      "action": "先按 view_translation_schema 结构化，再检索支持与对立因子；匹配结果不是交易建议。"
+    }
+  ],
+  "data_availability_gate": {
+    "rule": "读取 factor_registry.json 的 data_availability 和 calculation_implementation 后再决定输出能力。",
+    "when_current_false": [
+      "允许输出定义、大白话、所需数据、方法和历史证据。",
+      "禁止输出当前因子值、排名、分位数、归因贡献或由缺失数据推导的方向性结论。"
+    ],
+    "when_calculation_not_implemented": [
+      "明确写“当前 QTE 仅提供知识解释，数值计算引擎尚未实现”。",
+      "即使 data_availability.current=true，也不得让 LLM 代替数值引擎计算。"
+    ]
+  },
+  "evidence_gate": {
+    "preferred_order": [
+      "official_data_evidence",
+      "primary_paper_evidence",
+      "book_methodology",
+      "supplementary_research",
+      "evidence_pending"
+    ],
+    "pending_rule": "命中 evidence_pending 时只说明资料缺口、需要的来源和禁止事项，不得把因子定义本身当成有效性证据。",
+    "citation_rule": "所有实证表述必须携带 source_id、页码或数据版本；无可追溯来源时删除该实证表述。"
+  },
+  "translation_enforcement": [
+    "出口中的量化术语先查询 translation_lexicon.json，优先使用 plain 字段，再按需展开学术定义。",
+    "原始数字、精度、正负号、百分号、区间、单位、币种、日期和 unavailable 状态不得改写。",
+    "每个因子结论必须附 caveat、历史限定语、数据可用状态和来源。",
+    "先说这个结果说明什么，再说不能说明什么；公式和技术细节放在展开层。",
+    "不得把相关或归因贡献改写为已证明的因果。"
+  ],
+  "output_contract": {
+    "required_sections": [
+      "plain_answer",
+      "known_facts",
+      "unavailable_or_unexplained",
+      "supporting_and_opposing_evidence",
+      "caveats",
+      "sources",
+      "disclaimer"
+    ],
+    "structured_values_are_authoritative": true,
+    "llm_text_is_explanatory_only": true
+  },
+  "compliance_filter": [
+    "禁止输出涨跌预测、个性化买卖建议、收益承诺和确定性措辞。",
+    "一切实证表述带“历史上”或“过去样本中”等时间限定。",
+    "中国材料允许进入后端检索；前端是否显示由 display_policy 和 frontend_context 决定，不在编译阶段删除。",
+    "统一附“仅供学习参考，不构成任何投资建议”。"
+  ],
+  "fallback_protocol": {
+    "trigger": "LLM unavailable, timeout, invalid structured output, or policy rejection",
+    "action": "使用确定性模板拼接已有结构化字段和 translation_lexicon.plain，不生成新数字或新结论。",
+    "template_order": [
+      "原始结果",
+      "大白话定义",
+      "不能说明什么",
+      "数据状态",
+      "来源",
+      "免责声明"
+    ]
+  },
+  "hard_fail_conditions": [
+    "入口解析改变用户原始数字或标的。",
+    "出口数字与结构化结果不一致。",
+    "缺失数据时生成当前计算结果。",
+    "evidence_pending 被写成已经验证。",
+    "没有数值引擎时让 LLM 执行回归或归因。",
+    "来源不可追溯却输出具体实证数字。"
+  ]
+}
